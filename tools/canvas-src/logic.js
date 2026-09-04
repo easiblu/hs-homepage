@@ -787,11 +787,17 @@ class Component extends DCLogic {
     // same 767px breakpoint the rest of the page switches on
     /* The avatar now lives inside WebsiteNavV2, so the desktop menu can no
        longer be a child of it. It is rendered at the page root instead and
-       pinned under the nav — which is sticky, so its bottom edge moves as the
-       promo bar scrolls away. Measured while the menu is open, and only then. */
+       pinned under the avatar — the nav is sticky, so that edge moves as the
+       promo bar scrolls away. Measured while the menu is open, and only then.
+
+       Anchor on the avatar button, not .hs-nav-v2: the nav also spans the
+       category row below the avatar, so measuring the nav put the menu the
+       height of that row adrift. Fall back to the nav, then to a constant. */
     this._pnAnchor = () => {
-      const nav = document.querySelector(".hs-nav-v2") || document.querySelector("header");
-      const bottom = nav ? Math.round(nav.getBoundingClientRect().bottom) : 158;
+      const el = document.querySelector(".hs-nav-v2__avatar")
+        || document.querySelector(".hs-nav-v2")
+        || document.querySelector("header");
+      const bottom = el ? Math.round(el.getBoundingClientRect().bottom) : 158;
       if (bottom !== this.state.pnTop) this.setState({ pnTop: bottom });
     };
     this._pnMq = window.matchMedia("(max-width: 767px)");
@@ -1193,7 +1199,7 @@ class Component extends DCLogic {
       chips: chips.map(c => ({
         cat: this.spotChipText(c, code).cat, val: this.spotChipText(c, code).val,
         bcolor: c.src === "ask" ? "rgba(190,29,44,.28)" : "rgba(var(--hs-ink),.16)",
-        bg: c.src === "ask" ? "rgba(190,29,44,.05)" : "#fff",
+        bg: c.src === "ask" ? "rgba(190,29,44,.05)" : "var(--color-bg-main)",
         remove: () => this.spotSet({ chips: chips.filter(x => x !== c), asked: s.asked.filter(a => a !== c.cat) })
       })),
       hasQ: !!q, qText: q ? q.q : "", qSkip: () => q && this.spotSet({ asked: s.asked.concat([q.cat]) }),
@@ -1778,7 +1784,7 @@ class Component extends DCLogic {
           if (!st.pnOpen) setTimeout(() => this._pnAnchor(), 0);
           return { pnOpen: !st.pnOpen };
         }),
-        top: (this.state.pnTop || 158) + 12 + "px",
+        top: (this.state.pnTop || 158) + 8 + "px",
         close: () => this.setState({ pnOpen: false }),
         // the two branches render in different places in the tree, so each
         // carries the open check itself
