@@ -380,7 +380,7 @@ const SECTIONS = [
   [momentKids[7],  'faq',               'Faq',              'FAQ accordion groups'],
   [momentKids[8],  'letterbox',         'Letterbox',        'Someone\'s letterbox is waiting'],
   [momentKids[9],  'footer',            'Footer',           'Site footer: columns, payments, socials'],
-  [momentKids[10], 'spotlight',         'Spotlight',        'Command-K spotlight search overlay'],
+  [mainKids[22],   'spotlight',         'Spotlight',        'Command-K spotlight search overlay'],
 ];
 for (const [node, , name] of SECTIONS) SPLIT.set(node, name);
 

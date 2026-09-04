@@ -1047,7 +1047,7 @@ export class HomeBehavior extends React.Component<HomeProps, any> {
   spotOpen() {
     this._spQ = "";
     this.setState({ spot: Object.assign(this.SPOT0(), { open: true }) });
-    setTimeout(() => { const el = document.getElementById("hs-spot"); if (el) el.focus(); }, 60);
+    setTimeout(() => { const el = document.getElementById("hs-spot"); if (el) el.focus({ preventScroll: true }); }, 60);
   }
   spotClose() { clearTimeout(this._spT); this.spotSet({ open: false, thinking: false }); }
   spotInput(v) { this._spQ = v; this.spotSet({ q: v }); this.spotQuery(v, 420); }
@@ -1066,7 +1066,7 @@ export class HomeBehavior extends React.Component<HomeProps, any> {
     clearTimeout(this._spT);
     this._spQ = text;
     this.spotSet({ q: text, chips: [], asked: [], view: "rest", thinking: false, lang: null });
-    const el = document.getElementById("hs-spot"); if (el) el.focus();
+    const el = document.getElementById("hs-spot"); if (el) el.focus({ preventScroll: true });
     this.spotQuery(text, 180);
   }
   spotAnswer(cat, val) {

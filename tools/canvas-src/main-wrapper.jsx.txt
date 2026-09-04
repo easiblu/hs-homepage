@@ -62,9 +62,9 @@
         {Letterbox(v)}
         {" "}
         {Footer(v)}
-        {" "}
-        {Spotlight(v)}
       </div>
+      {" "}
+      {Spotlight(v)}
       {" "}
       {" "}
       {v.profile?.openDesktop ? (

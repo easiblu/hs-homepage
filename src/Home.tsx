@@ -130,9 +130,9 @@ export class Home extends HomeBehavior {
             {Letterbox(v)}
             {" "}
             {Footer(v)}
-            {" "}
-            {Spotlight(v)}
           </div>
+          {" "}
+          {Spotlight(v)}
           {" "}
           {" "}
           {v.profile?.openDesktop ? (

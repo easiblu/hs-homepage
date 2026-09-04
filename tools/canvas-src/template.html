@@ -1092,6 +1092,7 @@ Las Vegas, NV, US</span>
       </div>
     </div>
   </div>
+</div>
   <sc-if value="{{ sp.isOpen }}" hint-placeholder-val="{{ false }}">
   <div data-m="spotwrap" onClick="{{ sp.close }}" style="position: fixed; inset: 0; z-index: 9600; display: flex; justify-content: center; align-items: flex-start; padding: 10vh var(--space-4) var(--space-10); background: rgba(var(--hs-ink),0.30); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: hsin 0.16s ease both;">
     <div data-m="spotpanel" onClick="{{ sp.stop }}" style="display: flex; flex-direction: column; width: min(780px, 100%); max-height: 78vh; background: var(--color-bg-main); border: 1px solid var(--color-element-subtle); border-radius: 26px; box-shadow: 0 40px 90px rgba(var(--hs-ink),0.28), 0 2px 8px rgba(var(--hs-ink),0.08); overflow: hidden; animation: hsspot 0.24s cubic-bezier(0.2, 0.9, 0.3, 1) both;">
@@ -1212,7 +1213,6 @@ Las Vegas, NV, US</span>
     </div>
   </div>
   </sc-if>
-</div>
 
   <!-- profile menu, mobile: fixed sheet. Lives here, outside the sticky
        header, because that header carries a translateY() for nav auto-hide
