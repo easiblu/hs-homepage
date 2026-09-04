@@ -9,6 +9,30 @@
    than the canvas's bundled snapshot; verified identical for every token
    and every .hs-btn rule this page uses.
    ══════════════════════════════════════════════════════════════════════════ */
+/* ── Tailwind utilities, for design-system components that need them ───────
+   Most DS components carry their own styling (inline, btn.css, or injected
+   via useInjectedStyle), but the shadcn primitives underneath — Sheet, used
+   by the nav's reminders panel — are styled purely with Tailwind utilities.
+   Without these the sheet renders with `position: static` and drops out of
+   the viewport instead of sliding in from the right.
+
+   Deliberately NOT `@import "tailwindcss"`: that pulls in preflight, whose
+   global reset (margins, box-sizing, heading sizes) would re-lay-out the
+   whole approved page. Only the theme and utilities layers are taken.
+
+   The theme layer redefines --radius-sm…3xl, which the design system also
+   defines with different values. That is safe because layered styles lose to
+   unlayered ones: the DS tokens below are imported outside any layer, so they
+   win. Verified — --radius-2xl still resolves to the DS's 12px, not
+   Tailwind's 1rem. Keep the DS token imports unlayered for that reason.
+
+   source(none) plus an explicit @source: scan the design system's build for
+   class names, not this app, which uses none. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme) source(none);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@source "../../HS_Design_System_Git_Repo/dist";
+
 @import "@heartstampxo/design-system/tokens.css";
 @import "@heartstampxo/design-system/btn.css";
 
