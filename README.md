@@ -69,9 +69,20 @@ overwritten by `npm run port`.** Change the converter, not its output.
 
 ## Design system
 
-Wired as `"@heartstampxo/design-system": "file:../HS_Design_System_Git_Repo"`,
-so edits to the design system show up here immediately. Swap it for a pinned
-version when this ships.
+Installed from GitHub Packages, pinned to an exact version. The package is
+private, so `npm install` needs a token with `read:packages` on the
+`heartstampxo` org, read from `NODE_AUTH_TOKEN` by `.npmrc`:
+
+```bash
+NODE_AUTH_TOKEN=$(gh auth token) npm install
+```
+
+On Vercel, add `NODE_AUTH_TOKEN` as a project environment variable.
+
+To develop against a local checkout instead, point the dependency at it
+(`"file:../HS_Design_System_Git_Repo"`) and change the `@source` line in
+`home.css` to match — Tailwind scans the design system's build for the utility
+classes its shadcn primitives use.
 
 The canvas bundled its own reduced snapshot of the design system. That snapshot
 was checked against the real package before swapping:

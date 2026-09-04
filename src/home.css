@@ -27,11 +27,12 @@
    Tailwind's 1rem. Keep the DS token imports unlayered for that reason.
 
    source(none) plus an explicit @source: scan the design system's build for
-   class names, not this app, which uses none. */
+   class names, not this app, which uses none. Point at the installed
+   package, not a sibling checkout — a build machine only has node_modules. */
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme) source(none);
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
-@source "../../HS_Design_System_Git_Repo/dist";
+@source "../node_modules/@heartstampxo/design-system/dist";
 
 @import "@heartstampxo/design-system/tokens.css";
 @import "@heartstampxo/design-system/btn.css";

@@ -14,7 +14,7 @@
     "port": "npm run port:template && npm run port:assemble"
   },
   "dependencies": {
-    "@heartstampxo/design-system": "file:../HS_Design_System_Git_Repo",
+    "@heartstampxo/design-system": "2.1.57",
     "lenis": "1.1.13",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
