@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HeartStamp</title>
+
+<!-- Fonts, in the order the v5.7 canvas loaded them. DM Sans is requested
+     without the opsz axis on purpose: the page turns optical sizing off so iOS
+     Safari keeps real weights instead of synthesising them. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&family=Great+Vibes&family=Pacifico&family=Caveat:wght@400;600&family=Sacramento&family=Satisfy&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fasthand&display=swap">
+
+<!-- Hero video: same preload hint the canvas carried. -->
+<link rel="preload" as="video" href="/uploads/video hero.mp4" fetchpriority="high">
+
+<!-- Vimeo embed API, for the 3D deal card when a deal3dVideo id is set. The
+     page polls for window.Vimeo and works without it, so this stays a plain
+     script tag exactly as in the canvas. -->
+<script src="https://player.vimeo.com/api/player.js"></script>
+</head>
+<body>
+<!-- The v5.7 stylesheet keys its dark mode, mobile overrides and device-frame
+     preview off `#dc-root`, so the app mounts on that id and the CSS carries
+     over unedited. -->
+<div id="dc-root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
