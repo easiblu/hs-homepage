@@ -134,6 +134,28 @@ html, body { height: 100%; margin: 0; }
 .hs-ds-scope .hs-notif { --notif-z: 9500; }   /* declared on .hs-notif itself,
    so an ancestor value would never win */
 
+/* Sticky header. WebsiteNavV2 is `position: sticky; top: 0` on its own root,
+   which is all a consumer should need, but a sticky box can only travel
+   inside its containing block, and the canvas wraps this section in a plain
+   `div.hs-ds-scope` that is exactly the height of the bar. With no room to
+   move, the nav scrolled off the top with the wrapper: sticky in the
+   component, static on the page.
+
+   `display: contents` drops the wrapper's box so the nav becomes a direct
+   child of the page's root column, whose containing block is the full
+   document height. The `div.sc-host-x` between them already does this, for
+   the same reason.
+
+   The wrapper is only a styling hook, so it loses nothing: box-sizing, the
+   max-width release and --nav-track-margin below are all inherited or
+   descendant-matched, and none of them needs a box to apply.
+
+   This has to live here rather than in src/sections/top-nav.tsx, which
+   convert-template.cjs rewrites from tools/canvas-src/template.html on every
+   `npm run port`. Scoped with :has() so the two fixed-position .hs-ds-scope
+   wrappers around the profile menu keep the boxes their offsets measure. */
+.hs-ds-scope:has(.hs-nav-v2) { display: contents; }
+
 /* WebsiteNavV2 lays its content on a track of
       width: min(--nav-track-max, 100%); padding: 0 --nav-track-margin
    with both falling through to --grid-max-width / --grid-margin.
@@ -1224,3 +1246,113 @@ html, body { height: 100%; margin: 0; }
       #dc-root.hs-dark .hs-logo-light { display: none !important; }
       #dc-root.hs-dark .hs-logo-dark { display: block !important; }
       #dc-root.hs-dark [style*="background: #0a0a0a"] { box-shadow: inset 0 0 0 1px var(--color-element-subtle); }
+
+
+    /* ── Hero slides: pinned to the light palette ───────────────
+       The two dark blocks above re-declare 89 tokens on #dc-root and let them
+       inherit down the page. These land the light values on the slider boxes
+       themselves, and a declaration on the element always beats an inherited
+       one, so the slide subtree — design-system components included — resolves
+       light in either theme. No !important needed, and one rule covers both
+       the OS-dark and the forced .hs-dark path.
+
+       Scope is the slider box, NOT the section: .m-hero1-desk carries
+       background: var(--color-bg-main) plus vertical padding, so pinning it
+       painted a white frame around the slider in dark mode. .hs-hero-slides is
+       the 483px gradient box holding slides A/B/C and the next arrow, and
+       .m-heroswrap (mobile) paints nothing itself, only positions the slides.
+
+       --hs-media-dim is in the set, so the dark img/video filter rules
+       resolve to none inside the hero too. */
+    #dc-root .hs-hero-slides,
+    #dc-root .m-heroswrap {
+        --accent: #be1d2c;
+        --accent-hover: #d42031;
+        --accent-pressed: #a81a27;
+        --accent-subtle: rgba(190, 29, 44, 0.08);
+        --bg: #ffffff;
+        --bg-editor: #f5f5f4;
+        --bg-input: #ffffff;
+        --bg-menus: #ffffff;
+        --border: rgba(36, 36, 35, 0.1);
+        --btn-primary-ghost-active-bg: rgba(190, 29, 44, 0.16);
+        --btn-primary-ghost-hover-bg: rgba(190, 29, 44, 0.12);
+        --btn-secondary-ghost-hover-bdr: rgba(36, 36, 35, 0.15);
+        --btn-secondary-ghost-hover-bg: rgba(36, 36, 35, 0.12);
+        --color-bg-editor: #f5f5f4;
+        --color-bg-input: #ffffff;
+        --color-bg-main: #ffffff;
+        --color-bg-menus: #ffffff;
+        --color-bg-muted: #faf6f0;
+        --color-brand-lockup-heart: #f5bdc2;
+        --color-brand-primary: #be1d2c;
+        --color-brand-primary-dim: rgba(190, 29, 44, 0.08);
+        --color-brand-primary-hover: #d42031;
+        --color-brand-primary-pressed: #a81a27;
+        --color-brand-secondary: #242423;
+        --color-brand-secondary-dim: rgba(36, 36, 35, 0.06);
+        --color-brand-secondary-hover: #313130;
+        --color-brand-secondary-pressed: #171717;
+        --color-element-disabled: rgba(36, 36, 35, 0.06);
+        --color-element-link: #be1d2c;
+        --color-element-subtle: rgba(36, 36, 35, 0.10);
+        --color-state-error: #be1d2c;
+        --color-state-hover: rgba(36, 36, 35, 0.06);
+        --color-state-pressed: rgba(36, 36, 35, 0.08);
+        --color-state-success: #22c55e;
+        --color-state-warning: #f59e0b;
+        --color-text-disabled: #a9a8a4;
+        --color-text-on-primary: #ffffff;
+        --color-text-on-secondary: #ffffff;
+        --color-text-primary: #242423;
+        --color-text-secondary: #6e6d6a;
+        --fg: #242423;
+        --heart: #f5bdc2;
+        --hs-band: #242423;
+        --hs-band-hover: #313130;
+        --hs-chip: #e9e9ec;
+        --hs-ink: 36,36,35;
+        --hs-ink-faint: #8a8985;
+        --hs-ink-soft: #4a4a48;
+        --hs-mark-a: rgb(25,25,25);
+        --hs-mark-a2: rgb(56,56,56);
+        --hs-mark-b: #242423;
+        --hs-mark-hot: var(--color-brand-lockup-heart);
+        --hs-media-dim: none;
+        --hs-n1: rgb(250,246,240);
+        --hs-n10: rgb(194,184,173);
+        --hs-n11: rgb(251,216,221);
+        --hs-n12: rgb(223,223,223);
+        --hs-n13: rgb(214,214,214);
+        --hs-n14: rgb(230,230,230);
+        --hs-n15: rgb(241,240,228);
+        --hs-n2: rgb(242,242,242);
+        --hs-n3: rgb(245,189,194);
+        --hs-n4: rgb(255,228,230);
+        --hs-n5: rgb(255,214,218);
+        --hs-n6: rgb(237,237,237);
+        --hs-n7: rgb(233,233,232);
+        --hs-n8: rgb(245,245,244);
+        --hs-n9: rgb(247,241,234);
+        --hs-panel: #f9f9f9;
+        --hs-pill: #000000;
+        --hs-pill-fg: #ffffff;
+        --hs-surf: 255,255,255;
+        --hs-tint: #fbfbfa;
+        --hs-tint-2: #f0f0ef;
+        --hs-veil: 255,255,255;
+        --hs-well: #fbf5ee;
+        --link: #be1d2c;
+        --muted: rgba(36, 36, 35, 0.10);
+        --muted-fg: #6e6d6a;
+        --secondary: #242423;
+        --secondary-hover: #313130;
+        --secondary-pressed: #171717;
+        --secondary-subtle: rgba(36, 36, 35, 0.10);
+        --state-error: #be1d2c;
+        --state-hover: rgba(36, 36, 35, 0.06);
+        --state-pressed: rgba(36, 36, 35, 0.08);
+        --text-disabled: #a9a8a4;
+        --text-on-primary: #ffffff;
+        --text-on-secondary: #ffffff;
+    }

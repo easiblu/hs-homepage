@@ -161,14 +161,14 @@ export function Christmas(v: V) {
             {" "}
             <div style={{ position: "relative", width: "64px", height: "64px", flex: "none" }}>
               {" "}
-              <div style={{ position: "absolute", left: "8px", top: "5.334px", width: "48.155px", height: "53.333px", background: "url(assets/promo/icons-sprite.png) 61.396% 32.773% / 623.656% 292.557% no-repeat" }} />
+              <div style={{ position: "absolute", left: "1px", top: "5px", width: "61px", height: "53px", background: "url(assets/promo/icon-digital.png) 0 0 / 100% 100% no-repeat" }} />
               {" "}
             </div>
             {" "}
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-1)", alignItems: "flex-start", flex: "1" }}>
               {" "}
               <span style={{ alignSelf: "stretch", fontFamily: "var(--font-family-heading)", fontWeight: "600", fontSize: "var(--font-size-h4)", lineHeight: "100%", color: "var(--color-text-on-primary)" }}>
-                Digital card
+                Digital
               </span>
               {" "}
               <span style={{ alignSelf: "stretch", fontFamily: "var(--font-family-body)", fontWeight: "500", fontSize: "16px", lineHeight: "1.5", color: "rgba(255,255,255,0.8)" }}>
@@ -194,7 +194,51 @@ export function Christmas(v: V) {
               </span>
               {" "}
               <span style={{ alignSelf: "stretch", fontFamily: "var(--font-family-body)", fontWeight: "500", fontSize: "16px", lineHeight: "1.5", color: "rgba(255,255,255,0.8)" }}>
-                Each card has a unique serial number — yours is one of a kind.
+                Each card has a unique serial number, yours is one of a kind.
+              </span>
+              {" "}
+            </div>
+            {" "}
+          </div>
+          {" "}
+          <div style={{ boxSizing: "border-box", padding: "var(--space-3) 0", display: "flex", flexDirection: "row", gap: "var(--space-4)", alignItems: "center" }}>
+            {" "}
+            <div style={{ position: "relative", width: "64px", height: "64px", flex: "none" }}>
+              {" "}
+              <div style={{ position: "absolute", left: "8px", top: "5.334px", width: "48.155px", height: "53.333px", background: "url(assets/promo/icon-bulk-cards.png) 0 0 / 100% 100% no-repeat" }} />
+              {" "}
+            </div>
+            {" "}
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-1)", alignItems: "flex-start", flex: "1" }}>
+              {" "}
+              <span style={{ alignSelf: "stretch", fontFamily: "var(--font-family-heading)", fontWeight: "600", fontSize: "var(--font-size-h4)", lineHeight: "100%", color: "var(--color-text-on-primary)" }}>
+                Bulk cards, delivered for you.
+              </span>
+              {" "}
+              <span style={{ alignSelf: "stretch", fontFamily: "var(--font-family-body)", fontWeight: "500", fontSize: "16px", lineHeight: "1.5", color: "rgba(255,255,255,0.8)" }}>
+                One order, many cards. We mail each one for you.
+              </span>
+              {" "}
+            </div>
+            {" "}
+          </div>
+          {" "}
+          <div style={{ boxSizing: "border-box", padding: "var(--space-3) 0", display: "flex", flexDirection: "row", gap: "var(--space-4)", alignItems: "center" }}>
+            {" "}
+            <div style={{ position: "relative", width: "64px", height: "64px", flex: "none" }}>
+              {" "}
+              <div style={{ position: "absolute", left: "5.334px", top: "5.334px", width: "53.512px", height: "53.333px", background: "url(assets/promo/icon-custom-envelope.png) 0 0 / 100% 100% no-repeat" }} />
+              {" "}
+            </div>
+            {" "}
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-1)", alignItems: "flex-start", flex: "1" }}>
+              {" "}
+              <span style={{ alignSelf: "stretch", fontFamily: "var(--font-family-heading)", fontWeight: "600", fontSize: "var(--font-size-h4)", lineHeight: "100%", color: "var(--color-text-on-primary)" }}>
+                Custom Envelope
+              </span>
+              {" "}
+              <span style={{ alignSelf: "stretch", fontFamily: "var(--font-family-body)", fontWeight: "500", fontSize: "16px", lineHeight: "1.5", color: "rgba(255,255,255,0.8)" }}>
+                Add personal notes, add your return address, recipient address, everything is customizable
               </span>
               {" "}
             </div>

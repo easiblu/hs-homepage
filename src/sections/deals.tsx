@@ -61,7 +61,7 @@ export function Deals(v: V) {
             {" "}
           </div>
           <div style={{ position: "relative", width: "53%" }} onDragOver={v.dropVideo?.over} onDrop={v.dropVideo?.drop}>
-            <img className={"m-dealbadge"} style={{ position: "absolute", left: "0", top: "16px", transform: "translateX(-50%)", width: "104px", height: "100px", display: "block", pointerEvents: "none" }} src="uploads/discount 2.svg" alt="50% off" />
+            <img className={"m-dealbadge"} style={{ position: "absolute", left: "0", top: "16px", transform: "translateX(-50%)", width: "104px", height: "100px", display: "block", pointerEvents: "none", zIndex: "1" }} src="uploads/discount 2.svg" alt="50% off" />
             {" "}
             <video style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} src="uploads/3D card.mp4" autoPlay={true} muted={true} loop={true} playsInline={true} preload="auto" />
             {" "}

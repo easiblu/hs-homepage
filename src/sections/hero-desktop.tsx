@@ -8,7 +8,7 @@ export function HeroDesktop(v: V) {
     <>
     <div className={"m-hero1-desk"} style={{ background: "var(--color-bg-main)", display: "flex", flexDirection: "column", alignItems: "center", padding: "var(--space-6) 0" }}>
       {" "}
-      <div style={{ position: "relative", width: "var(--hs-grid, 1200px)", height: "483px", overflow: "hidden", background: "linear-gradient(var(--hs-n10), rgb(177,167,156))", animation: "hs-hero-up 0.75s cubic-bezier(0.22, 1.18, 0.36, 1) 0.05s both" }} data-no-reveal="">
+      <div className={"hs-hero-slides"} style={{ position: "relative", width: "var(--hs-grid, 1200px)", height: "483px", overflow: "hidden", background: "linear-gradient(var(--hs-n10), rgb(177,167,156))", animation: "hs-hero-up 0.75s cubic-bezier(0.22, 1.18, 0.36, 1) 0.05s both" }} data-no-reveal="">
         {" "}
         <div style={{ position: "absolute", left: "0", top: "0", width: "100%", height: "100%", opacity: v.slideAOpacity, transition: "opacity 0.6s ease", pointerEvents: v.slideAPointer }}>
           {" "}
