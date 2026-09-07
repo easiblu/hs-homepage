@@ -35,13 +35,10 @@ const CLIPS = {
   dealsBanner: 'uploads/banner.mp4',
   deals3d: 'uploads/3D card.mp4',
   phone: 'uploads/iphone0banner.webm',
-  phoneFallback: 'uploads/iphone_banner-v1.mp4',
   /* VP9 with an alpha channel, so the tablet sits on the dark ground with no
-     plate behind it. Copied from the design system's own asset — the page's
-     older digital3d.mp4 is opaque and is kept only as the Safari fallback,
-     which cannot decode alpha WebM. */
+     plate behind it. Copied from the design system's own asset; this page
+     never had a transparent version. */
   tablet: 'uploads/digital-3d.webm',
-  tabletFallback: 'uploads/digital3d.mp4',
 } as const;
 
 /** Deals, with the two clips served from this site. Order matches DEAL_CARDS. */
@@ -50,14 +47,34 @@ export const DEALS_CARDS: DealCard[] = DEAL_CARDS.map((card, i) => ({
   video: { ...card.video, src: [CLIPS.dealsBanner, CLIPS.deals3d][i] },
 }));
 
-/** The iPhone panel. The WebM carries alpha; Safari gets the MP4 instead. */
+/**
+ * The iPhone panel. Same reasoning as the tablet below: no fallbackSrc, so
+ * Safari falls through to the transparent still rather than to
+ * iphone_banner-v1.mp4, whose baked ground reads as a plate on the dark panel.
+ *
+ * This does drop the phone's scrolling UI on Safari, which the canvas build
+ * kept — but it kept it by showing the plate, and the plate is the more
+ * obvious fault of the two on a dark page.
+ */
 export const APP_IOS: AppShowcaseIosPanel = {
   ...APP_SHOWCASE_IOS,
-  video: { ...APP_SHOWCASE_IOS.video, src: CLIPS.phone, fallbackSrc: CLIPS.phoneFallback },
+  video: { ...APP_SHOWCASE_IOS.video, src: CLIPS.phone },
 };
 
-/** The tablet panel. Alpha WebM, with the opaque MP4 behind it for Safari. */
+/**
+ * The tablet panel.
+ *
+ * Deliberately NO fallbackSrc. Safari cannot decode VP9 alpha, and the only
+ * flat clip this page has is digital3d.mp4, whose baked-in white ground reads
+ * as a plate behind the tablet on the dark panel. Left unset, the block falls
+ * through to `image` — the packaged still, which is transparent — so Safari
+ * loses the motion but keeps the composition. That is what the design system
+ * does, and it is the lesser of the two.
+ *
+ * A real fix would be an HEVC-with-alpha MP4, the one transparent video format
+ * Safari does support. Worth doing when someone re-encodes these.
+ */
 export const APP_DIGITAL: AppShowcaseDigitalPanel = {
   ...APP_SHOWCASE_DIGITAL,
-  video: { ...APP_SHOWCASE_DIGITAL.video, src: CLIPS.tablet, fallbackSrc: CLIPS.tabletFallback },
+  video: { ...APP_SHOWCASE_DIGITAL.video, src: CLIPS.tablet },
 };
