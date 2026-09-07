@@ -14,6 +14,13 @@
 
    Every section is a plain function of `v`, the `renderVals()` output, which
    is how the canvas template read its bindings too.
+
+   The exception is the bands that now come from the design system. Those were
+   ported out of this page into @heartstampxo/design-system as blocks, and the
+   block is what ships — so they are imported rather than rendered from
+   sections/. The canvas still carries its own copy of each, and sections/
+   still holds the compiled markup; the swap lives in tools/assemble-home.cjs
+   under DS_BLOCKS, which is where to undo it.
    ══════════════════════════════════════════════════════════════════════════ */
 import { hv } from './lib/dc';
 import type { V } from './lib/dc';
@@ -21,7 +28,8 @@ import { HomeBehavior } from './home-behavior';
 import { DEFAULT_PROPS } from './home-props';
 import './home.css';
 
-import { ProfileNavDesktop, ProfileNavMobile } from '@heartstampxo/design-system/hs';
+import { AnnouncementBar, AppShowcase, ChristmasPromo, CtaBand, Deals, FaqBlock, FormatBand, ProfileNavDesktop, ProfileNavMobile, SeoColumns, Testimonial, UspGrid, WebsiteFooter } from '@heartstampxo/design-system/hs';
+import { APP_DIGITAL, APP_IOS, DEALS_CARDS } from './block-props';
 import { CookieBarMobile } from './sections/cookie-bar-mobile';
 import { MobileNav } from './sections/mobile-nav';
 import { CookieBarDesktop } from './sections/cookie-bar-desktop';
@@ -36,25 +44,14 @@ import { ChatTeaser } from './sections/chat-teaser';
 import { BottomGlass } from './sections/bottom-glass';
 import { Reminders } from './sections/reminders';
 import { AppPromo } from './sections/app-promo';
-import { PromoBar } from './sections/promo-bar';
 import { TopNav } from './sections/top-nav';
 import { HeroMobile } from './sections/hero-mobile';
 import { HeroDesktop } from './sections/hero-desktop';
 import { Categories } from './sections/categories';
-import { PrintedDigital } from './sections/printed-digital';
 import { Features } from './sections/features';
-import { Deals } from './sections/deals';
-import { Christmas } from './sections/christmas';
 import { MomentsBand } from './sections/moments-band';
-import { AppIos } from './sections/app-ios';
 import { Editor } from './sections/editor';
-import { Testimonials } from './sections/testimonials';
 import { PromptToArt } from './sections/prompt-to-art';
-import { WhyDifferent } from './sections/why-different';
-import { SeoCards } from './sections/seo-cards';
-import { Faq } from './sections/faq';
-import { Letterbox } from './sections/letterbox';
-import { Footer } from './sections/footer';
 import { Spotlight } from './sections/spotlight';
 
 export type { HomeProps, PreviewMode } from './home-props';
@@ -91,7 +88,7 @@ export class Home extends HomeBehavior {
           {" "}
           {AppPromo(v)}
           {" "}
-          {PromoBar(v)}
+          <AnnouncementBar />
           {" "}
           {TopNav(v)}
           {" "}
@@ -101,35 +98,35 @@ export class Home extends HomeBehavior {
           {" "}
           {Categories(v)}
           {" "}
-          {PrintedDigital(v)}
+          <FormatBand />
           {" "}
           {Features(v)}
           {" "}
-          {Deals(v)}
+          <Deals cards={DEALS_CARDS} />
           {" "}
-          {Christmas(v)}
+          <ChristmasPromo />
           {" "}
           <div style={{ background: "var(--color-bg-main)", boxSizing: "border-box", padding: "56px 0 0", display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--space-8)", opacity: "1", animation: v.momentAnim }} ref={v.momentRef}>
             {" "}
             {MomentsBand(v)}
             {" "}
-            {AppIos(v)}
+            <AppShowcase ios={APP_IOS} digital={APP_DIGITAL} />
             {" "}
             {Editor(v)}
             {" "}
-            {Testimonials(v)}
+            <Testimonial />
             {" "}
             {PromptToArt(v)}
             {" "}
-            {WhyDifferent(v)}
+            <UspGrid />
             {" "}
-            {SeoCards(v)}
+            <SeoColumns />
             {" "}
-            {Faq(v)}
+            <FaqBlock />
             {" "}
-            {Letterbox(v)}
+            <CtaBand />
             {" "}
-            {Footer(v)}
+            <WebsiteFooter tuck />
           </div>
           {" "}
           {Spotlight(v)}

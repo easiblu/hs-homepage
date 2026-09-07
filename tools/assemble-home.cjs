@@ -4,7 +4,7 @@ const W = path.join(__dirname, 'canvas-src');
 const APP = path.join(__dirname, '..', 'src');
 
 const logic = fs.readFileSync(path.join(W, 'logic.js'), 'utf8').replace(/\n$/, '');
-const wrapper = fs.readFileSync(path.join(W, 'main-wrapper.jsx.txt'), 'utf8').replace(/\n$/, '');
+let wrapper = fs.readFileSync(path.join(W, 'main-wrapper.jsx.txt'), 'utf8').replace(/\n$/, '');
 
 const lines = logic.split('\n');
 if (lines[0].trim() !== 'class Component extends DCLogic {')
@@ -29,6 +29,63 @@ const SECTIONS = [
   ['WhyDifferent', 'why-different'], ['SeoCards', 'seo-cards'], ['Faq', 'faq'],
   ['Letterbox', 'letterbox'], ['Footer', 'footer'], ['Spotlight', 'spotlight'],
 ];
+
+/* ── Sections served by the design system ─────────────────────────────────
+   These bands were lifted into @heartstampxo/design-system as blocks, and the
+   block is now what ships. The canvas file still carries its own copy and
+   convert-template still writes sections/*.tsx for them, so nothing is lost —
+   but the assembler drops the local import and swaps the call for the block.
+
+   Each entry is  section component -> [block, JSX props]. The blocks default
+   to the approved content, which is why most need no props at all: they were
+   ported from these very sections. Delete an entry and the canvas section
+   comes straight back on the next `npm run port`.
+
+   Keep the keys in step with SECTIONS above — a name with no call site in the
+   wrapper throws rather than silently doing nothing.
+
+   WebsiteFooter takes `tuck`, which pulls it up 32px to sit flush against the
+   CTA band above and swallow the separator between them — the design system
+   leaves that off by default so the two read as separate blocks in the docs,
+   but on this page they are one closing section.
+
+   The two entries carrying video props are handled below. A built copy of the
+   design system bakes root-absolute "/assets/x.mp4" URLs that nothing copies
+   to our web root, so those clips are served from this site's own
+   public/uploads instead — see src/block-props.ts. */
+const DS_BLOCKS = {
+  PromoBar:       ['AnnouncementBar', ''],
+  PrintedDigital: ['FormatBand',      ''],
+  Deals:          ['Deals',           'cards={DEALS_CARDS}'],
+  Christmas:      ['ChristmasPromo',  ''],
+  AppIos:         ['AppShowcase',     'ios={APP_IOS} digital={APP_DIGITAL}'],
+  Testimonials:   ['Testimonial',     ''],
+  WhyDifferent:   ['UspGrid',         ''],
+  SeoCards:       ['SeoColumns',      ''],
+  Faq:            ['FaqBlock',        ''],
+  Letterbox:      ['CtaBand',         ''],
+  Footer:         ['WebsiteFooter',   'tuck'],
+};
+
+/* Swap the calls before anything reads the wrapper: dsUsed scans it for
+   capitalised tags, so the blocks get imported by the existing mechanism
+   rather than a second one. */
+for (const [name, [block, props]] of Object.entries(DS_BLOCKS)) {
+  const call = `{${name}(v)}`;
+  if (!wrapper.includes(call)) {
+    throw new Error(`DS_BLOCKS: no call site for ${name} in main-wrapper.jsx.txt`);
+  }
+  wrapper = wrapper.split(call).join(`<${block}${props ? ' ' + props : ''} />`);
+}
+
+/* Any {CONSTANT} referenced by a block's props comes from block-props.ts. */
+const blockProps = [...new Set(
+  Object.values(DS_BLOCKS)
+    .flatMap(([, props]) => [...props.matchAll(/\{([A-Z][A-Z0-9_]*)\}/g)].map((m) => m[1])),
+)].sort();
+
+/* What is left is still rendered from sections/. */
+const LIVE_SECTIONS = SECTIONS.filter(([n]) => !(n in DS_BLOCKS));
 for (const [, f] of SECTIONS)
   if (!fs.existsSync(path.join(APP, 'sections', f + '.tsx')))
     throw new Error('missing section file: ' + f);
@@ -127,7 +184,7 @@ ${body}
 /* …and the same for lib/dc helpers the wrapper's own markup may need. */
 const dcHelpers = ['hv', 'act', 'foc', 'cx', 'toArray'].filter((h) => new RegExp('\\b' + h + '\\(').test(wrapper));
 
-const sectionNames = new Set(SECTIONS.map(([n]) => n));
+const sectionNames = new Set(LIVE_SECTIONS.map(([n]) => n));
 const dsUsed = [...new Set(
   [...wrapper.matchAll(/<([A-Z][A-Za-z0-9]*)\b/g)].map((m) => m[1]).filter((n) => !sectionNames.has(n) && n !== 'React'),
 )].sort();
@@ -148,13 +205,20 @@ fs.writeFileSync(path.join(APP, 'Home.tsx'), `/* ══════════�
 
    Every section is a plain function of \`v\`, the \`renderVals()\` output, which
    is how the canvas template read its bindings too.
+
+   The exception is the bands that now come from the design system. Those were
+   ported out of this page into @heartstampxo/design-system as blocks, and the
+   block is what ships — so they are imported rather than rendered from
+   sections/. The canvas still carries its own copy of each, and sections/
+   still holds the compiled markup; the swap lives in tools/assemble-home.cjs
+   under DS_BLOCKS, which is where to undo it.
    ══════════════════════════════════════════════════════════════════════════ */
 ${dcHelpers.length ? `import { ${dcHelpers.join(', ')} } from './lib/dc';\n` : ''}import type { V } from './lib/dc';
 import { HomeBehavior } from './home-behavior';
 import { DEFAULT_PROPS } from './home-props';
 import './home.css';
 
-${dsUsed.length ? `import { ${dsUsed.join(', ')} } from '@heartstampxo/design-system/hs';\n` : ''}${SECTIONS.map(([n, f]) => `import { ${n} } from './sections/${f}';`).join('\n')}
+${dsUsed.length ? `import { ${dsUsed.join(', ')} } from '@heartstampxo/design-system/hs';\n` : ''}${blockProps.length ? `import { ${blockProps.join(', ')} } from './block-props';\n` : ''}${LIVE_SECTIONS.map(([n, f]) => `import { ${n} } from './sections/${f}';`).join('\n')}
 
 export type { HomeProps, PreviewMode } from './home-props';
 
