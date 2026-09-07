@@ -29,13 +29,19 @@ import {
   type AppShowcaseDigitalPanel,
 } from '@heartstampxo/design-system/hs';
 
-/* The same files the canvas sections used, so nothing new is deployed. */
+/* The clips the canvas sections already used, with one addition: the tablet's
+   alpha WebM, which this page never had. */
 const CLIPS = {
   dealsBanner: 'uploads/banner.mp4',
   deals3d: 'uploads/3D card.mp4',
   phone: 'uploads/iphone0banner.webm',
   phoneFallback: 'uploads/iphone_banner-v1.mp4',
-  tablet: 'uploads/digital3d.mp4',
+  /* VP9 with an alpha channel, so the tablet sits on the dark ground with no
+     plate behind it. Copied from the design system's own asset — the page's
+     older digital3d.mp4 is opaque and is kept only as the Safari fallback,
+     which cannot decode alpha WebM. */
+  tablet: 'uploads/digital-3d.webm',
+  tabletFallback: 'uploads/digital3d.mp4',
 } as const;
 
 /** Deals, with the two clips served from this site. Order matches DEAL_CARDS. */
@@ -50,8 +56,8 @@ export const APP_IOS: AppShowcaseIosPanel = {
   video: { ...APP_SHOWCASE_IOS.video, src: CLIPS.phone, fallbackSrc: CLIPS.phoneFallback },
 };
 
-/** The tablet panel. */
+/** The tablet panel. Alpha WebM, with the opaque MP4 behind it for Safari. */
 export const APP_DIGITAL: AppShowcaseDigitalPanel = {
   ...APP_SHOWCASE_DIGITAL,
-  video: { ...APP_SHOWCASE_DIGITAL.video, src: CLIPS.tablet },
+  video: { ...APP_SHOWCASE_DIGITAL.video, src: CLIPS.tablet, fallbackSrc: CLIPS.tabletFallback },
 };
