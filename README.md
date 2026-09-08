@@ -25,7 +25,7 @@ flat object the template renders against. Both halves carry over directly.
 | Canvas | Here |
 | --- | --- |
 | `class Component extends DCLogic` | `src/home-behavior.ts` — verbatim, re-parented onto `React.Component` |
-| the bound template | `src/sections/*.tsx` — 34 sections, compiled to JSX |
+| the bound template | `src/sections/*.tsx` — 34 sections, compiled to JSX (11 superseded by design-system blocks, below) |
 | the five `<style>` blocks | `src/home.css` — verbatim |
 | what the canvas runtime supplied | `src/lib/dc.ts` |
 | `data-props` editor schema | `src/home-props.ts` |
@@ -66,6 +66,51 @@ attribute and event-name mapping, `cssToObj`.
 
 **Anything hand-edited in `src/sections/` or `src/home-behavior.ts` is
 overwritten by `npm run port`.** Change the converter, not its output.
+
+## Blocks from the design system
+
+Eleven bands were lifted out of this page into `@heartstampxo/design-system`
+as blocks, and the block is now what ships:
+
+| section | block |
+| --- | --- |
+| `promo-bar` | `AnnouncementBar` |
+| `printed-digital` | `FormatBand` |
+| `deals` | `Deals` |
+| `christmas` | `ChristmasPromo` |
+| `app-ios` | `AppShowcase` |
+| `testimonials` | `Testimonial` |
+| `why-different` | `UspGrid` |
+| `seo-cards` | `SeoColumns` |
+| `faq` | `FaqBlock` |
+| `letterbox` | `CtaBand` |
+| `footer` | `WebsiteFooter` |
+
+The swap lives in `tools/assemble-home.cjs` under `DS_BLOCKS`, so it is
+reproduced by `npm run port` rather than erased by it. The canvas file still
+carries its own copy of each band and `convert-template` still writes the
+`sections/*.tsx` for them — they are simply no longer imported. Delete an entry
+from `DS_BLOCKS` and the canvas section comes straight back.
+
+The blocks default to the approved content, because they were ported from these
+very sections, so most take no props at all. Two exceptions, both in
+`DS_BLOCKS`:
+
+- **`WebsiteFooter` takes `tuck`** — it pulls the footer up 32px to sit flush
+  against the CTA band and swallow the separator between them. The design system
+  leaves that off by default so the two read as separate blocks in its docs; on
+  this page they are one closing section.
+- **`Deals` and `AppShowcase` take their video from `src/block-props.ts`.** A
+  built copy of the design system bakes a root-absolute `/assets/x.mp4` into its
+  JavaScript and ships the file inside the package; nothing copies it to the
+  consumer's web root, so those URLs 404 in dev and in the build. This page has
+  served every one of those clips from `public/uploads` since the canvas port,
+  so it points the blocks at its own copies. `src/block-props.ts` is
+  hand-written and is *not* regenerated.
+
+> ⚠️ Worth fixing upstream: any consumer of those blocks gets four dead video
+> URLs. Marketing video arguably should not ship inside a component package at
+> all — but if it does, the URL needs to survive being installed somewhere else.
 
 ## Design system
 
